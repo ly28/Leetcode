@@ -30,3 +30,34 @@ class Solution {
         return count == n;
     }
 }
+
+public class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        ArrayList[] graph = new ArrayList[n];
+        Set<Integer> visited = new HashSet<>();
+        
+        for (int i = 0; i < n; i++)
+            graph[i] = new ArrayList();
+        for (int[] e : edges) {
+            graph[e[0]].add(e[1]);
+            graph[e[1]].add(e[0]);
+        }
+        
+        if (hasCycle(-1, 0, visited, graph)) return false;
+        
+        return visited.size() == n;
+    }
+
+    private boolean hasCycle(int prev, int curr, Set<Integer> visited, ArrayList[] graph) {
+        visited.add(curr);
+        
+        for (int i = 0; i < graph[curr].size(); i++) {
+            int next = (int)graph[curr].get(i);
+            if (next == prev) continue;
+            if (visited.contains(next) || hasCycle(curr, next, visited, graph))
+                return true;
+        }
+        return false;
+    }
+
+}
